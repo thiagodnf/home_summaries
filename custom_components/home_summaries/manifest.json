@@ -12,5 +12,5 @@
   "documentation": "https://github.com/thiagodnf/climate_status",
   "issue_tracker": "https://github.com/thiagodnf/climate_status/issues",
   "iot_class": "local_push",
-  "requirements": []
+  "requirements": [ ]
 }
