@@ -1,0 +1,23 @@
+{
+    "config": {
+        "abort": {
+            "no_areas_found": "No areas found on your home assistant. Please create them first before using this integration"
+        },
+        "error": {
+            "no_areas_selected": "You must select at least one area to continue"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "areas": "Select one or more areas to aggregate the climate status."
+                }
+            }
+        }
+    },
+    "issues": {
+        "group_has_invalid_state": {
+            "title": "{name} is unavailable",
+            "description": "{name} is unavailable because the following sensors are currently unavailable, unknown, or providing invalid states: {entity_ids}. \n\nPlease check these sensors in your dashboard to ensure they are online and reporting correct states."
+        }
+    }
+}
