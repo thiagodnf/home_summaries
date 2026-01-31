@@ -1,5 +1,8 @@
 {
-    "name": "Climate Status",
-    "render_readme": true,
-    "homeassistant": "2025.7.0"
+  "name": "Home Summaries",
+  "render_readme": true,
+  "homeassistant": "2025.7.0",
+  "hacs": "2.0.5",
+  "zip_release": true,
+  "filename": "home_summaries.zip"
 }

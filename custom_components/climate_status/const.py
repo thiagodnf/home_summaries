@@ -1,5 +1,5 @@
-INTEGRATION_NAME = "Area Climate Status"
+INTEGRATION_NAME = "Home Summaries"
 
-DOMAIN = "climate_status"
+DOMAIN = "home_summaries"
 
 MANUFACTURER = "thiagodnf"

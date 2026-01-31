@@ -1,14 +1,16 @@
 {
-    "version": "1.0.0",
-    "domain": "climate_status",
-    "name": "Climate Status",
-    "codeowners": [
-        "@thiagodnf"
-    ],
-    "config_flow": true,
-    "dependencies": [],
-    "documentation": "https://github.com/thiagodnf/climate_status",
-    "issue_tracker": "https://github.com/thiagodnf/climate_status/issues",
-    "iot_class": "local_push",
-    "requirements": []
+  "version": "0.0.0",
+  "domain": "home_summaries",
+  "name": "Home Summaries",
+  "codeowners": [
+    "@thiagodnf"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "homeassistant"
+  ],
+  "documentation": "https://github.com/thiagodnf/climate_status",
+  "issue_tracker": "https://github.com/thiagodnf/climate_status/issues",
+  "iot_class": "local_push",
+  "requirements": []
 }
