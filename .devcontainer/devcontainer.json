@@ -9,7 +9,7 @@
   "forwardPorts": [
     8123
   ],
-  "postCreateCommand": "pip3 install homeassistant && mkdir -p config",
+  "postCreateCommand": "python3 -m pip install --upgrade pip && pip3 install homeassistant && mkdir -p config",
   "remoteUser": "vscode",
   "customizations": {
     "vscode": {
