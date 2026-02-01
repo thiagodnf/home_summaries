@@ -1,0 +1,15 @@
+services:
+  homeassistant:
+    container_name: home_summaries
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+      - ./custom_components/home_summaries:/config/custom_components/home_summaries
+    privileged: true
+    environment:
+      - TZ=America/New_York
+    restart: unless-stopped
