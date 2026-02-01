@@ -13,3 +13,7 @@ services:
     environment:
       - TZ=America/New_York
     restart: unless-stopped
+    develop:
+      watch:
+        - action: restart
+          path: ./custom_components/home_summaries

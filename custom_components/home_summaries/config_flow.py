@@ -13,8 +13,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input = None):
 
-        _LOGGER.info("Hello!!!")
-
         area_reg = async_get_area_registry(self.hass)
         areas = {area.id: area.name for area in area_reg.async_list_areas()}
 
