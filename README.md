@@ -27,7 +27,8 @@ I open-source almost everything I can, and I try to reply to everyone needing he
 However, if you get some profit from this or just want to encourage me to continue creating stuff, there are few ways you can do it:
 
 <a href="https://www.buymeacoffee.com/thiagodnf" target="_blank">
-  <img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg" alt="Buy Me A Coffee">
+  <img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg" alt="Buy Me A Coffee" width="150px">
 </a>
 
+<br/>
 Thanks! ❤️
