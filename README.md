@@ -10,7 +10,7 @@ Please make sure you have installed Docker on your computer. Then, open the proj
 docker compose watch
 ```
 
-Home Assistant will automatically restart whenever any file in the watched folder changes
+Home Assistant will automatically restart whenever any file in `./custom_components/home_summaries` changes
 
 ## Contribute
 
