@@ -9,9 +9,11 @@
       "no_label_selected": "You must select a label to continue"
     },
     "step": {
-      "areas": {
+      "user": {
+        "description": "Choose areas and assign a label to include sensors in Home Summaries.",
         "data": {
-          "areas": "Select one or more areas to aggregate in the area summary"
+          "areas": "Areas",
+          "label": "Label"
         }
       }
     }
