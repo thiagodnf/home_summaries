@@ -10,3 +10,43 @@ logger:
   default: warning
   logs:
     custom_components.home_summaries: debug
+
+template:
+  - sensor:
+      - name: "Living Room Sofa Temperature Sensor"
+        unique_id: living_room_sofa_temperature_sensor
+        state: 80
+        unit_of_measurement: "°F"
+        device_class: temperature
+        state_class: measurement
+      - name: "Living Room Sofa Humidity Sensor"
+        unique_id: living_room_sofa_humidity_sensor
+        state: 25
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+      - name: "Living Room Main Temperature Sensor"
+        unique_id: living_room_main_temperature_sensor
+        state: 75
+        unit_of_measurement: "°F"
+        device_class: temperature
+        state_class: measurement
+      - name: "Living Room Main Humidity Sensor"
+        unique_id: living_room_main_humidity_sensor
+        state: 30
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+      - name: "Kitchen Temperature Sensor"
+        unique_id: kitchen_temperature_sensor
+        state: 72
+        unit_of_measurement: "°F"
+        device_class: temperature
+        state_class: measurement
+      - name: "Kitchen Humidity Sensor"
+        unique_id: kitchen_humidity_sensor
+        state: 40
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
