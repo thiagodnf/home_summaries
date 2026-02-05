@@ -1,19 +1,18 @@
 {
   "config": {
     "abort": {
-      "no_areas_found": "No areas found on your home assistant. Please create them first before using this integration.",
-      "single_instance_allowed": "Only a single configuration of Home Summaries is allowed."
+      "only_single_integration_allowed": "Only a single Home Summaries integration is allowed."
     },
     "error": {
-      "no_areas_selected": "You must select at least one area to continue",
-      "no_label_selected": "You must select a label to continue"
+      "at_least_one_area_required": "Select at least one area",
+      "at_least_one_label_required": "Select a label to continue"
     },
     "step": {
       "user": {
         "description": "Choose areas and assign a label to include sensors in Home Summaries.",
         "data": {
-          "areas": "Areas",
-          "label": "Label"
+          "area_ids": "Areas",
+          "label_id": "Label"
         }
       }
     }

@@ -7,15 +7,15 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
-    _LOGGER.info("Setting up entry %s", entry)
+  _LOGGER.debug("Setting up entry %s", entry)
 
-    # Forward the setup to the sensor platform
-    await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+  # Forward the setup to the sensor platform
+  await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
 
-    return True
+  return True
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
 
-    _LOGGER.info("Unloading entry %s", entry)
+  _LOGGER.debug("Unloading entry %s", entry)
 
-    return await hass.config_entries.async_unload_platforms(entry, ["sensor"])
+  return await hass.config_entries.async_unload_platforms(entry, ["sensor"])
