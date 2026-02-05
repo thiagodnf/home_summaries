@@ -17,6 +17,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
   area_registry = get_area_registry(hass)
   device_registry = get_device_registry(hass)
 
+  sensors = []
+
   for area_id in entry.data.get("area_ids"):
 
     area = area_registry.async_get_area(area_id)
@@ -30,17 +32,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     )
 
     # Assign area separately (Just a pre selection. The user can change it later)
-    device_registry.async_update_device(
-        device.id,
-        area_id=area_id
-    )
+    device_registry.async_update_device(device.id, area_id=area_id)
 
     # Create sensors
-    sensors = [
-        AverageTemperatureSensor(hass, device),
-        AverageHumiditySensor(hass, device)
-    ]
+    sensors.append(AverageTemperatureSensor(hass, device))
+    sensors.append(AverageHumiditySensor(hass, device))
 
-    async_add_entities(sensors, update_before_add=True)
+  async_add_entities(sensors, update_before_add=True)
 
   _LOGGER.info("Setup complete for %s", device.name)
