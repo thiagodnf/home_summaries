@@ -140,7 +140,7 @@ class GroupSensor(SensorGroup):
     state = self.hass.states.get(entry.entity_id)
 
     if state:
-        return state.attributes.get("device_class")
+      return state.attributes.get("device_class")
 
     # Return None because the sensor does not
     # have any device_class associated to
