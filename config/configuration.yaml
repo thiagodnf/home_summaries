@@ -54,6 +54,10 @@ template:
         unique_id: kitchen_door_sensor
         state: "on"
         device_class: door
+      - name: "Kitchen Sliding Door Sensor"
+        unique_id: kitchen_sliding_door_sensor
+        state: "on"
+        device_class: door
       - name: "Kitchen Window Sensor"
         unique_id: kitchen_window_sensor
         state: "off"

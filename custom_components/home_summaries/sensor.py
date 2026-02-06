@@ -11,6 +11,7 @@ from .const import DOMAIN, MANUFACTURER, INTEGRATION_NAME
 
 from .sensors.AverageHumiditySensor import AverageHumiditySensor
 from .sensors.AverageTemperatureSensor import AverageTemperatureSensor
+from .sensors.DoorsOpenSensor import DoorsOpenSensor
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities) -> None:
 
@@ -40,6 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     # Create sensors
     sensors.append(AverageTemperatureSensor(hass, device, label_id))
     sensors.append(AverageHumiditySensor(hass, device, label_id))
+    sensors.append(DoorsOpenSensor(hass, device, label_id))
 
   async_add_entities(sensors, update_before_add=True)
 
