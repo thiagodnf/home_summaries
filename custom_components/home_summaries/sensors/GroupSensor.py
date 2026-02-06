@@ -3,7 +3,6 @@ import logging
 from homeassistant.components.group.sensor import SensorGroup
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
-from homeassistant.helpers.event import async_track_entity_registry_updated_event
 from homeassistant.helpers.event import async_track_state_change_event
 
 from homeassistant.helpers.entity_registry import EVENT_ENTITY_REGISTRY_UPDATED
