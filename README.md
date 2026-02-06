@@ -7,7 +7,7 @@ A Home Assistant integration providing dynamic per-area summary sensors
 Please make sure you have installed Docker on your computer. Then, open the project's folder using the terminal and type the following command:
 
 ```sh
-docker compose watch
+docker compose up
 ```
 
 Home Assistant will automatically restart whenever any file in `./custom_components/home_summaries` changes
