@@ -102,30 +102,6 @@ class GroupSensor(SensorGroup):
 
     self._refresh_state()
 
-    # # Ignore itself to avoid infinite loops
-    # if entry.entity_id == self.entity_id:
-    #   return
-
-    # # Ignore if the sensor has a different device class
-    # if self._group_device_class != self.get_device_class(entry):
-    #   return
-
-    # # Ignore if the sensor does not have the target label
-    # if self.target_label not in entry.labels:
-    #   return
-
-    # # Ignore if the sensor has a different area id
-    # if self._device.area_id != self.get_area_id(entry):
-    #   return
-
-    # if action in ["create", "update"] and entity_id not in self._entity_ids:
-    #   self._entity_ids.append(entity_id)
-
-    # self._refresh_state()
-
-    # if action in ("update"):
-    # self._update_member_list()
-
   @callback
   def _update_member_list(self):
     """Find entities matching label and area, then update group."""
@@ -142,24 +118,6 @@ class GroupSensor(SensorGroup):
 
       if isGrouped:
         new_member_ids.append(entry.entity_id)
-      # # Skip itself to avoid infinite loops
-      # if entry.entity_id == self.entity_id:
-      #   continue
-
-      # # Skip if the sensor has a different device class
-      # if self._group_device_class != self.get_device_class(entry):
-      #   continue
-
-      # # Skip if the sensor does not have the target label
-      # if self.target_label not in entry.labels:
-      #   continue
-
-      # # Skip if the sensor has a different area id
-      # if self._device.area_id != self.get_area_id(entry):
-      #   continue
-
-      # If we made it here, it's a match!
-      # new_member_ids.append(entry.entity_id)
 
     # Update the group sensor if the new member
     # list is different from the previous one
