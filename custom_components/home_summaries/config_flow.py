@@ -19,10 +19,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     await self.async_create_summary_label_if_not_exists()
 
-    data_schema = {
+    data_schema = vol.Schema({
       vol.Required("area_ids"): selector.AreaSelector({"multiple": True}),
       vol.Required("label_id"): selector.LabelSelector({"multiple": False})
-    }
+    })
 
     errors = {}
 
@@ -41,7 +41,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_create_entry(title = INTEGRATION_NAME, data = user_input)
 
-    return self.async_show_form(step_id="user", data_schema=vol.Schema(data_schema), errors=errors)
+    return self.async_show_form(step_id="user", data_schema=data_schema, errors=errors)
 
   async def async_create_summary_label_if_not_exists(self):
 

@@ -3,12 +3,13 @@ from homeassistant.components.sensor import SensorDeviceClass
 from .GroupSensor import GroupSensor
 
 class AverageHumiditySensor(GroupSensor):
-    
-    def __init__(self, hass, device):
+
+    def __init__(self, hass, device, label_id):
         super().__init__(
-            hass, 
+            hass,
             device,
-            SensorDeviceClass.HUMIDITY, 
-            "Average Humidity", 
+            label_id,
+            SensorDeviceClass.HUMIDITY,
+            "Average Humidity",
             "mean"
         )
