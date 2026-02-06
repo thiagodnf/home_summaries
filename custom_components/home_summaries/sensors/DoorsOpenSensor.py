@@ -11,5 +11,5 @@ class DoorsOpenSensor(BinaryGroupSensor):
         label_id,
         BinarySensorDeviceClass.DOOR,
         "Doors Opened",
-        True
+        False
       )

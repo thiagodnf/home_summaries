@@ -82,11 +82,6 @@ class GroupSensor(SensorGroup):
 
     _LOGGER.info("Entity_id %s got changed", event.data)
 
-    if action in ["remove"] and entity_id in self._entity_ids:
-      self._entity_ids.remove(entity_id)
-      self._refresh_state()
-      return
-
     ent_reg = er.async_get(self.hass)
     entry = ent_reg.async_get(entity_id)
 

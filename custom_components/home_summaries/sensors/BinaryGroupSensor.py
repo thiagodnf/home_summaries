@@ -84,11 +84,6 @@ class BinaryGroupSensor(BinarySensorGroup):
 
     _LOGGER.info("Entity_id %s got changed", event.data)
 
-    if action in ["remove"] and entity_id in self._entity_ids:
-      self._entity_ids.remove(entity_id)
-      self._refresh_state()
-      return
-
     ent_reg = er.async_get(self.hass)
     entry = ent_reg.async_get(entity_id)
 
@@ -127,10 +122,13 @@ class BinaryGroupSensor(BinarySensorGroup):
       self._refresh_state()
 
   def _refresh_state(self):
-      # 1. Recalculate the mathematical state (mean/sum/etc)
+
+    _LOGGER.debug("Refreshing state for %s", self._entity_ids)
+
+    # 1. Recalculate the state
     self.async_update_group_state()
 
-    # 3. Push the update to the UI
+    # 2. Push the update to the UI
     self.async_write_ha_state()
 
   def get_device_class(self, entry):
@@ -179,6 +177,9 @@ class BinaryGroupSensor(BinarySensorGroup):
     # Ignore itself to avoid infinite loops
     if entry.entity_id == self.entity_id:
       return False
+
+    _LOGGER.info("self._group_device_class %s", self._group_device_class)
+    _LOGGER.info("self.get_device_class(entry) %s", self.get_device_class(entry))
 
     # Ignore if the sensor has a different device class
     if self._group_device_class != self.get_device_class(entry):
