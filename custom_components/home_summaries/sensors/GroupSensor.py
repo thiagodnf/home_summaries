@@ -91,7 +91,7 @@ class GroupSensor(SensorGroup):
     ent_reg = er.async_get(self.hass)
     entry = ent_reg.async_get(entity_id)
 
-    isGrouped = self._is_part_of_the_group(entry)
+    isGrouped = self.is_part_of_the_group(entry)
 
     if isGrouped and entity_id not in self._entity_ids:
       self._entity_ids.append(entity_id)
@@ -114,7 +114,7 @@ class GroupSensor(SensorGroup):
     for entry in er.async_entries_for_label(ent_reg, self.target_label):
     # for entry in ent_reg.entities.values():
 
-      isGrouped = self._is_part_of_the_group(entry)
+      isGrouped = self.is_part_of_the_group(entry)
 
       if isGrouped:
         new_member_ids.append(entry.entity_id)
@@ -169,7 +169,7 @@ class GroupSensor(SensorGroup):
     # have any area_id associated to
     return None
 
-  def _is_part_of_the_group(self, entry):
+  def is_part_of_the_group(self, entry):
 
     # Ignore if entry does not exist
     if not entry:
