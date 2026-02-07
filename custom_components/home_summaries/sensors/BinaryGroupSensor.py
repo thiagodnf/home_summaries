@@ -1,7 +1,7 @@
 import logging
 
-from homeassistant.components.group.sensor import SensorGroup
 from homeassistant.components.group.binary_sensor import BinarySensorGroup
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
@@ -25,21 +25,24 @@ class BinaryGroupSensor(BinarySensorGroup):
   ):
     """Initialize using the parent Group constructor."""
     super().__init__(
-        entity_ids=[],
-        device_class=group_device_class,
+        entity_ids=['binary_sensor.kitchen_sliding_door_sensor', 'binary_sensor.kitchen_door_sensor'],
+        device_class=BinarySensorDeviceClass.DOOR,
         name=f"{device.name} {name}",
         mode=mode,
         unique_id=f"{device.name} {name}".lower().replace(" ", "_"),
     )
 
     self.hass = hass
-
-    self._group_device_class = group_device_class
-    self._attr_device_class = group_device_class
-    self._area_id = device.area_id
     self._device = device
-
     self.target_label = label_id
+    self._attr_name = name
+    self._group_device_class = group_device_class
+
+  @property
+  def extra_state_attributes(self):
+    return {
+      "entity_id": self._entity_ids,
+    }
 
   @property
   def device_info(self):
@@ -124,12 +127,12 @@ class BinaryGroupSensor(BinarySensorGroup):
   def _refresh_state(self):
 
     _LOGGER.debug("Refreshing state for %s", self._entity_ids)
+    self.async_defer_or_update_ha_state()
+    # # 1. Recalculate the state
+    # self.async_update_group_state()
 
-    # 1. Recalculate the state
-    self.async_update_group_state()
-
-    # 2. Push the update to the UI
-    self.async_write_ha_state()
+    # # 2. Push the update to the UI
+    # self.async_write_ha_state()
 
   def get_device_class(self, entry):
 
