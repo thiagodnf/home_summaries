@@ -9,6 +9,7 @@ from .core.utils.Entity import get_entities_by_area_id_and_label_id
 from .core.binary_sensors.DoorStatus import DoorStatus
 from .core.binary_sensors.WindowsStatus import WindowsStatus
 from .core.binary_sensors.WaterLeak import WaterLeak
+from .core.binary_sensors.MotionStatus import MotionStatus
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     sensors.append(DoorStatus(hass, device, entries))
     sensors.append(WindowsStatus(hass, device, entries))
     sensors.append(WaterLeak(hass, device, entries))
+    sensors.append(MotionStatus(hass, device, entries))
 
   async_add_entities(sensors, update_before_add=True)
 
