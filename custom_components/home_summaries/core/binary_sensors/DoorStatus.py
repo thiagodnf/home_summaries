@@ -3,16 +3,13 @@ import logging
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.group.binary_sensor import BinarySensorGroup
 
-from ..utils.Entity import filter_entities_by
-
 _LOGGER = logging.getLogger(__name__)
 
 class DoorStatus(BinarySensorGroup):
 
-  def __init__(self, hass, device, entities: list):
+  def __init__(self, hass, device, entity_ids: list):
 
     name = f"{device.name} Door Status"
-    entity_ids = filter_entities_by(hass, entities, BinarySensorDeviceClass.DOOR)
 
     super().__init__(
         entity_ids = entity_ids,

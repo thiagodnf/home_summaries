@@ -9,10 +9,9 @@ _LOGGER = logging.getLogger(__name__)
 
 class AverageTemperature(SensorGroup):
 
-  def __init__(self, hass, device, entities: list):
+  def __init__(self, hass, device, entity_ids: list):
 
     name = f"{device.name} Average Temperature"
-    entity_ids = filter_entities_by(hass, entities, SensorDeviceClass.TEMPERATURE)
 
     """Initialize using the parent Group constructor."""
     super().__init__(

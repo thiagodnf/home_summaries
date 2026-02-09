@@ -2,15 +2,23 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.components.sensor import SensorDeviceClass
 
 from .core.utils.Device import get_or_create_device
 from .core.utils.Entity import get_entities_by_area_id_and_label_id
+from .core.utils.Entity import filter_entities_by
 
 from .core.sensors.AverageHumidity import AverageHumidity
 from .core.sensors.AverageTemperature import AverageTemperature
 from .core.sensors.DewPoint import DewPoint
 
 _LOGGER = logging.getLogger(__name__)
+
+SENSOR_MAP = {
+    SensorDeviceClass.HUMIDITY: AverageHumidity,
+    SensorDeviceClass.TEMPERATURE: AverageTemperature,
+    SensorDeviceClass.MOISTURE: DewPoint,
+}
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities) -> None:
 
@@ -25,12 +33,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     entries = get_entities_by_area_id_and_label_id(hass, area_id, label_id)
 
-    humSensor = AverageHumidity(hass, device, entries)
-    tempSensor = AverageTemperature(hass, device, entries)
+    humidity_entity_ids = filter_entities_by(hass, entries, SensorDeviceClass.HUMIDITY)
+    temperature_entity_ids = filter_entities_by(hass, entries, SensorDeviceClass.TEMPERATURE)
 
-    sensors.append(humSensor)
-    sensors.append(tempSensor)
-    sensors.append(DewPoint(hass, device, tempSensor, humSensor))
+    humSensor = None
+    tempSensor = None
+
+    if humidity_entity_ids:
+      humSensor = AverageHumidity(hass, device, humidity_entity_ids)
+      sensors.append(humSensor)
+    if temperature_entity_ids:
+      tempSensor = AverageTemperature(hass, device, temperature_entity_ids)
+      sensors.append(tempSensor)
+
+    if tempSensor and humSensor:
+      sensors.append(DewPoint(hass, device, tempSensor, humSensor))
 
   async_add_entities(sensors, update_before_add=True)
 
