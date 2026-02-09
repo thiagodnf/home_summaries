@@ -39,16 +39,15 @@ class DewPoint(SensorEntity):
   def device_info(self):
     """Associate this entity with a device in the device registry."""
     return {
-        "identifiers": self._device.identifiers,
-        "name": self._device.name,
-        "manufacturer": self._device.manufacturer,
-        "model": self._device.model
+      "identifiers": self._device.identifiers,
+      "name": self._device.name,
+      "manufacturer": self._device.manufacturer,
+      "model": self._device.model
     }
 
   @property
   def extra_state_attributes(self):
     return {
-      "level": self.get_level(),
       "feels_like": self.get_feels_like(),
       "feels_like_as_emoji": self.get_feels_like_as_emoji()
     }
@@ -64,24 +63,24 @@ class DewPoint(SensorEntity):
 
     try:
 
-        T_c = (T - 32.0) * 5.0 / 9.0
-        b, c = 17.625, 243.04
-        gamma = (b * T_c) / (c + T_c) + log(H / 100.0)
-        dew_c = (c * gamma) / (b - gamma)
+      T_c = (T - 32.0) * 5.0 / 9.0
+      b, c = 17.625, 243.04
+      gamma = (b * T_c) / (c + T_c) + log(H / 100.0)
+      dew_c = (c * gamma) / (b - gamma)
 
-        return (dew_c * 9.0 / 5.0) + 32.0
+      return (dew_c * 9.0 / 5.0) + 32.0
     except (ValueError, ZeroDivisionError):
-        return None
+      return None
 
   async def async_added_to_hass(self):
     """Register listeners to trigger updates."""
     self.async_on_remove(
-        async_track_state_change_event(
-            self._hass,[
-              self.tempSensor.entity_id,
-              self.humSensor.entity_id
-            ],self._update_callback
-        )
+      async_track_state_change_event(
+        self._hass,[
+          self.tempSensor.entity_id,
+          self.humSensor.entity_id
+        ],self._update_callback
+      )
     )
 
   async def _update_callback(self, event):
@@ -96,21 +95,21 @@ class DewPoint(SensorEntity):
     dp = self.get_state_value(self.entity_id)
 
     if dp is None:
-        return None
+      return None
     elif dp < 50:
-        return 0
+      return 0
     elif dp < 55:
-        return 1
+      return 1
     elif dp < 60:
-        return 2
+      return 2
     elif dp < 65:
-        return 3
+      return 3
     elif dp < 70:
-        return 4
+      return 4
     elif dp < 75:
-        return 5
+      return 5
     else:
-        return 6
+      return 6
 
   def get_feels_like(self):
 
