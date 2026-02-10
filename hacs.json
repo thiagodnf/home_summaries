@@ -4,6 +4,7 @@
   "homeassistant": "2025.7.0",
   "hacs": "2.0.5",
   "domains": [
-    "sensor"
+    "sensor",
+    "binary_sensor"
   ]
 }
