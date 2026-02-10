@@ -2,6 +2,7 @@ import logging
 
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.group.binary_sensor import BinarySensorGroup
+from homeassistant.util import slugify
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ class WaterLeak(BinarySensorGroup):
         device_class = BinarySensorDeviceClass.MOISTURE,
         name = name,
         mode = False,
-        unique_id = name.lower().replace(" ", "_")
+        unique_id = slugify(name)
     )
 
     self._device = device
