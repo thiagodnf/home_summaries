@@ -6,6 +6,8 @@ from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.util import slugify
 from math import log
 
+from ..utils.Entity import get_state_value
+
 _LOGGER = logging.getLogger(__name__)
 
 class DewPoint(SensorEntity):
@@ -55,8 +57,8 @@ class DewPoint(SensorEntity):
   @property
   def native_value(self):
     """Calculate the dew point on the fly."""
-    T = self.get_state_value(self.tempSensor.entity_id)
-    H = self.get_state_value(self.humSensor.entity_id)
+    T = get_state_value(self._hass, self.tempSensor.entity_id)
+    H = get_state_value(self._hass, self.humSensor.entity_id)
 
     if not T or not H:
       return None
@@ -86,13 +88,9 @@ class DewPoint(SensorEntity):
   async def _update_callback(self, event):
     self.async_write_ha_state()
 
-  def get_state_value(self, entity_id: str):
-    obj = self._hass.states.get(entity_id)
-    return float(obj.state) if obj and obj.state not in ("unknown", "unavailable") else None
-
   def get_level(self):
 
-    dp = self.get_state_value(self.entity_id)
+    dp = get_state_value(self._hass, self.entity_id)
 
     if dp is None:
       return None
