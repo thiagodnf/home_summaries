@@ -1,3 +1,5 @@
+import logging
+
 from homeassistant.components.sensor import (SensorDeviceClass, SensorEntity, SensorStateClass)
 from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers.event import async_track_state_change_event
@@ -5,6 +7,8 @@ from homeassistant.util import slugify
 from math import log
 
 from ..utils.Entity import get_state_value
+
+_LOGGER = logging.getLogger(__name__)
 
 class DewPoint(SensorEntity):
 
@@ -35,6 +39,8 @@ class DewPoint(SensorEntity):
 
     self._feels_like = None
     self._feels_like_emoji = None
+
+    _LOGGER.debug("Setup complete for %s", self._attr_name)
 
   @property
   def device_info(self):

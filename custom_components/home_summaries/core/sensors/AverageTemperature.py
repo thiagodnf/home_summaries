@@ -1,9 +1,7 @@
 import logging
 
 from homeassistant.components.group.sensor import SensorGroup
-from homeassistant.components.sensor import SensorDeviceClass
-
-from ..utils.Entity import filter_entities_by
+from homeassistant.util import slugify
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,7 +17,7 @@ class AverageTemperature(SensorGroup):
         entity_ids = entity_ids,
         name = name,
         sensor_type = "mean",
-        unique_id = name.lower().replace(" ", "_"),
+        unique_id = slugify(name),
         ignore_non_numeric=True,
         unit_of_measurement=None,
         state_class=None,
