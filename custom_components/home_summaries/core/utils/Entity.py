@@ -56,5 +56,10 @@ def filter_entities_by(hass: HomeAssistant, entries: list, device_class: BinaryS
   ]
 
 def get_state_value(hass: HomeAssistant, entity_id: str):
+
+  if not entity_id:
+    return None
+
   obj = hass.states.get(entity_id)
+
   return float(obj.state) if obj and obj.state not in ("unknown", "unavailable") else None

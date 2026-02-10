@@ -1,5 +1,3 @@
-import logging
-
 from homeassistant.components.sensor import (SensorDeviceClass, SensorEntity, SensorStateClass)
 from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers.event import async_track_state_change_event
@@ -7,8 +5,6 @@ from homeassistant.util import slugify
 from math import log
 
 from ..utils.Entity import get_state_value
-
-_LOGGER = logging.getLogger(__name__)
 
 class DewPoint(SensorEntity):
 
@@ -27,7 +23,7 @@ class DewPoint(SensorEntity):
 
     self._device = device
 
-    self._feels_like = {
+    self.FEELS_LIKE = {
       0: {"emoji": "⚪️", "description": "Very Pleasant"},
       1: {"emoji": "🔵", "description": "Pleasant"},
       2: {"emoji": "🟢", "description": "Comfortable"},
@@ -36,6 +32,9 @@ class DewPoint(SensorEntity):
       5: {"emoji": "🔴", "description": "Very Humid"},
       6: {"emoji": "🟣", "description": "Dangerously Humid"},
     }
+
+    self._feels_like = None
+    self._feels_like_emoji = None
 
   @property
   def device_info(self):
@@ -47,15 +46,23 @@ class DewPoint(SensorEntity):
       "model": self._device.model
     }
 
-  @property
-  def extra_state_attributes(self):
-    return {
-      "feels_like": self.get_feels_like(),
-      "feels_like_as_emoji": self.get_feels_like_as_emoji()
-    }
+  async def async_update(self):
+
+    dewPoint = self._calculate_dew_point()
+
+    self._attr_native_value = dewPoint
+    self._feels_like = self.get_feels_like(dewPoint, "description")
+    self._feels_like_emoji = self.get_feels_like(dewPoint, "emoji")
 
   @property
-  def native_value(self):
+  def extra_state_attributes(self):
+
+    return {
+      "feels_like": self._feels_like,
+      "feels_like_as_emoji": self._feels_like_emoji
+    }
+
+  def _calculate_dew_point(self):
     """Calculate the dew point on the fly."""
     T = get_state_value(self._hass, self.tempSensor.entity_id)
     H = get_state_value(self._hass, self.humSensor.entity_id)
@@ -86,43 +93,24 @@ class DewPoint(SensorEntity):
     )
 
   async def _update_callback(self, event):
-    self.async_write_ha_state()
+    self.async_schedule_update_ha_state(True)
 
-  def get_level(self):
+  def get_level(self, dp: float):
 
-    dp = get_state_value(self._hass, self.entity_id)
+    if dp is None: return None
+    elif dp < 50: return 0
+    elif dp < 55: return 1
+    elif dp < 60: return 2
+    elif dp < 65: return 3
+    elif dp < 70: return 4
+    elif dp < 75: return 5
+    else: return 6
 
-    if dp is None:
-      return None
-    elif dp < 50:
-      return 0
-    elif dp < 55:
-      return 1
-    elif dp < 60:
-      return 2
-    elif dp < 65:
-      return 3
-    elif dp < 70:
-      return 4
-    elif dp < 75:
-      return 5
-    else:
-      return 6
+  def get_feels_like(self, dp:float, info:str = "description"):
 
-  def get_feels_like(self):
+    level = self.get_level(dp)
 
-    level = self.get_level()
-
-    if level not in self._feels_like:
+    if level not in self.FEELS_LIKE:
       return None
 
-    return self._feels_like[level]["description"]
-
-  def get_feels_like_as_emoji(self):
-
-    level = self.get_level()
-
-    if level not in self._feels_like:
-      return None
-
-    return self._feels_like[level]["emoji"]
+    return self.FEELS_LIKE[level][info]
