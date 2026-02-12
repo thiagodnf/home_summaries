@@ -1,7 +1,6 @@
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import async_get as get_device_registry
 from homeassistant.helpers import entity_registry as er
-from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 
 def get_all_entities_by_label_id(hass: HomeAssistant, label_id: str) -> list:
   ent_reg = er.async_get(hass)
