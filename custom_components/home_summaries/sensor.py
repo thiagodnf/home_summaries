@@ -14,18 +14,14 @@ from .core.sensors.DewPoint import DewPoint
 
 _LOGGER = logging.getLogger(__name__)
 
-SENSOR_MAP = {
-    SensorDeviceClass.HUMIDITY: AverageHumidity,
-    SensorDeviceClass.TEMPERATURE: AverageTemperature,
-    SensorDeviceClass.MOISTURE: DewPoint,
-}
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities) -> None:
 
   area_ids = entry.data.get("area_ids")
   label_id = entry.data.get("label_id")
 
-  sensors = []
+  tempSensors = []
+  humSensors = []
+  dewPointSensors = []
 
   for area_id in area_ids:
 
@@ -41,13 +37,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     if humidity_entity_ids:
       humSensor = AverageHumidity(hass, device, humidity_entity_ids)
-      sensors.append(humSensor)
+      humSensors.append(humSensor)
+
     if temperature_entity_ids:
       tempSensor = AverageTemperature(hass, device, temperature_entity_ids)
-      sensors.append(tempSensor)
+      tempSensors.append(tempSensor)
 
     if tempSensor and humSensor:
-      sensors.append(DewPoint(hass, device, tempSensor, humSensor))
+      dewPointSensor = DewPoint(hass, device, tempSensor, humSensor)
+      dewPointSensors.append(dewPointSensor)
+
+  sensors = tempSensors + humSensors + dewPointSensors
 
   async_add_entities(sensors, update_before_add=True)
 
