@@ -4,6 +4,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.helpers import selector
 from homeassistant.helpers.label_registry import async_get as get_label_registry
+from homeassistant.helpers.area_registry import async_get as get_area_registry
 
 from .const import DOMAIN, INTEGRATION_NAME
 
@@ -18,6 +19,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
       return self.async_abort(reason="only_single_integration_allowed")
 
     await self.async_create_summary_label_if_not_exists()
+    await self.async_create_area_if_not_exists("Home")
 
     data_schema = vol.Schema({
       vol.Required("area_ids"): selector.AreaSelector({"multiple": True}),
@@ -56,3 +58,13 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
           color="#bd93f9",
           description="Use this label to include the sensor in Home Summaries"
       )
+
+  async def async_create_area_if_not_exists(self, area_name:str):
+
+    area_reg = get_area_registry(self.hass)
+
+    area = area_reg.async_get_area_by_name(area_name)
+
+    if area is None:
+      area = area_reg.async_create(area_name)
+      area_reg.async_update(area.id, icon="mdi:home")
