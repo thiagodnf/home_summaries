@@ -3,6 +3,24 @@ from homeassistant.helpers.device_registry import async_get as get_device_regist
 from homeassistant.helpers import entity_registry as er
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 
+def get_all_entities_by_label_id(hass: HomeAssistant, label_id: str) -> list:
+  ent_reg = er.async_get(hass)
+  return er.async_entries_for_label(ent_reg, label_id)
+
+def filter_entries_by_area_id(hass: HomeAssistant, entries: list, area_id: str):
+  return [ entry for entry in entries if get_area_id(hass, entry) == area_id]
+
+def filter_entries_by_device_class(hass: HomeAssistant, entries: list, device_class):
+  return [ entry for entry in entries if get_device_class(hass, entry) == device_class]
+
+# def filter_entities_by(hass: HomeAssistant, entries: list, device_class: BinarySensorDeviceClass):
+
+#   return [
+#     entry.entity_id
+#     for entry in entries
+#     if get_device_class(hass, entry) == device_class
+#   ]
+
 def get_device_class(hass: HomeAssistant, entry):
 
     # Check for device_class on the entity itself
