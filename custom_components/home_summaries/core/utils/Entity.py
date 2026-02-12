@@ -13,14 +13,6 @@ def filter_entries_by_area_id(hass: HomeAssistant, entries: list, area_id: str):
 def filter_entries_by_device_class(hass: HomeAssistant, entries: list, device_class):
   return [ entry for entry in entries if get_device_class(hass, entry) == device_class]
 
-# def filter_entities_by(hass: HomeAssistant, entries: list, device_class: BinarySensorDeviceClass):
-
-#   return [
-#     entry.entity_id
-#     for entry in entries
-#     if get_device_class(hass, entry) == device_class
-#   ]
-
 def get_device_class(hass: HomeAssistant, entry):
 
     # Check for device_class on the entity itself
@@ -54,24 +46,6 @@ def get_area_id(hass: HomeAssistant, entry) -> str | None:
   # Return None because the sensor does not
   # have any area_id associated to
   return None
-
-def get_entities_by_area_id_and_label_id(hass: HomeAssistant, area_id: str, label_id: str):
-
-  ent_reg = er.async_get(hass)
-
-  return [
-    entry
-    for entry in er.async_entries_for_label(ent_reg, label_id)
-    if get_area_id(hass, entry) == area_id
-  ]
-
-def filter_entities_by(hass: HomeAssistant, entries: list, device_class: BinarySensorDeviceClass):
-
-  return [
-    entry.entity_id
-    for entry in entries
-    if get_device_class(hass, entry) == device_class
-  ]
 
 def get_state_value(hass: HomeAssistant, entity_id: str):
 
