@@ -44,7 +44,7 @@ class DewPoint(HSSensorEntity):
     return {
         **attrs,
         "feels_like": self.get_feels_like("text"),
-        "feels_like_emoji": self.get_feels_like("emoji"),
+        "feels_like_as_emoji": self.get_feels_like("emoji"),
     }
 
   def get_level(self, dp: float):
