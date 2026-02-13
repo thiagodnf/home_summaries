@@ -6,6 +6,8 @@ from homeassistant.const import UnitOfTemperature
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import EVENT_HOMEASSISTANT_START, STATE_UNKNOWN, STATE_UNAVAILABLE
 from homeassistant.helpers.event import async_track_state_change_event
+from homeassistant.helpers import entity_registry as er, device_registry as dr
+from homeassistant.components.sensor import SensorDeviceClass
 
 import statistics
 
@@ -21,7 +23,7 @@ class AverageTemperature(SensorEntity):
   def __init__(self, hass, device, entity_ids: list):
     self._hass = hass
     self._device = device
-    self._entity_ids = entity_ids
+    self._entity_ids = []
     self._attr_name = f"{device.name} Average Temperature"
     self._attr_unique_id = slugify(self._attr_name)
     self._attr_device_class = SensorDeviceClass.TEMPERATURE
@@ -47,6 +49,8 @@ class AverageTemperature(SensorEntity):
   async def async_added_to_hass(self) -> None:
     """Handle entity which is about to be added to Home Assistant."""
 
+    self._entity_ids = await self.async_get_entities()
+
     # 1. Listen for ANY change in the member entities
     # This is "reactive"—it works even if the entities appear 5 minutes late.
     self.async_on_remove(
@@ -59,6 +63,17 @@ class AverageTemperature(SensorEntity):
     self._async_calculate_average()
 
     _LOGGER.info("called async_added_to_hass %s", self._entity_ids)
+
+  async def async_get_entities(self):
+
+    entries = get_all_entities_by_label_id(self.hass, "summary")
+
+    entries = filter_entries_by_area_id(self.hass, entries, self._device.area_id)
+    entries = filter_entries_by_device_class(self.hass, entries, SensorDeviceClass.TEMPERATURE)
+
+    _LOGGER.info("[a.entity_id for a in entries] %s", [a.entity_id for a in entries])
+
+    return [a.entity_id for a in entries]
 
   async def _async_on_state_change(self, event):
     """Handle child state changes."""
