@@ -38,6 +38,12 @@ class AverageTemperature(SensorEntity):
       "model": self._device.model
     }
 
+  @property
+  def extra_state_attributes(self):
+    return {
+      "entity_id": self._entity_ids,
+    }
+
   async def async_added_to_hass(self) -> None:
     """Handle entity which is about to be added to Home Assistant."""
 
@@ -52,10 +58,14 @@ class AverageTemperature(SensorEntity):
     # 2. Trigger an immediate initial calculation
     self._async_calculate_average()
 
+    _LOGGER.info("called async_added_to_hass")
+
   async def _async_on_state_change(self, event):
     """Handle child state changes."""
     self._async_calculate_average()
     self.async_write_ha_state()
+
+    _LOGGER.info("called _async_on_state_change %s", self._entity_ids)
 
   def _async_calculate_average(self):
     """Perform the mean calculation."""
@@ -70,8 +80,11 @@ class AverageTemperature(SensorEntity):
           continue
 
     if not values:
+      _LOGGER.info("_attr_native_value %s", self._attr_native_value)
       self._attr_native_value = None
       return
 
     # Simple mean calculation: $$ \text{mean} = \frac{\sum v_i}{n} $$
     self._attr_native_value = round(statistics.mean(values), 2)
+
+    _LOGGER.info("_attr_native_value %s", self._attr_native_value)
