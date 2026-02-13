@@ -44,12 +44,6 @@ async def set_up_area_id(hass: HomeAssistant, device, entries: list) -> list:
   for target_area_id in target_area_ids:
     target_entries += filter_entries_by_area_id(hass, entries, target_area_id)
 
-  onlyHumidSensors = filter_entries_by_device_class(hass, target_entries, SensorDeviceClass.HUMIDITY)
-  onlyTempSensors = filter_entries_by_device_class(hass, target_entries, SensorDeviceClass.TEMPERATURE)
-
-  humid_entity_ids = [entry.entity_id for entry in onlyHumidSensors]
-  temp_entity_ids = [entry.entity_id for entry in onlyTempSensors]
-
   sensors = []
 
   # if humid_entity_ids:
@@ -61,7 +55,7 @@ async def set_up_area_id(hass: HomeAssistant, device, entries: list) -> list:
   sensors.append(tempSensor)
 
   # if tempSensor and humidSensor:
-  dewPointSensor = DewPoint(hass, device, tempSensor, humidSensor)
+  dewPointSensor = DewPoint(device, tempSensor, humidSensor)
   sensors.append(dewPointSensor)
 
   return sensors
