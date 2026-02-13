@@ -58,7 +58,7 @@ class AverageTemperature(SensorEntity):
     # 2. Trigger an immediate initial calculation
     self._async_calculate_average()
 
-    _LOGGER.info("called async_added_to_hass")
+    _LOGGER.info("called async_added_to_hass %s", self._entity_ids)
 
   async def _async_on_state_change(self, event):
     """Handle child state changes."""
