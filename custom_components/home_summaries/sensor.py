@@ -53,11 +53,11 @@ async def set_up_area_id(hass: HomeAssistant, device, entries: list) -> list:
   sensors = []
 
   # if humid_entity_ids:
-  humidSensor = AverageHumidity(hass, device, humid_entity_ids)
+  humidSensor = AverageHumidity(device)
   sensors.append(humidSensor)
 
   # if temp_entity_ids:
-  tempSensor = AverageTemperature(hass, device, temp_entity_ids)
+  tempSensor = AverageTemperature(device)
   sensors.append(tempSensor)
 
   # if tempSensor and humidSensor:

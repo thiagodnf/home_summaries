@@ -9,6 +9,7 @@
     "editor.formatOnSave": true
   },
   "cSpell.words": [
-    "hass"
+    "hass",
+    "HOMEASSISTANT"
   ]
 }
