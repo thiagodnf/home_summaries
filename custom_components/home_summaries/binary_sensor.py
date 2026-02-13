@@ -58,20 +58,20 @@ async def set_up_area_id(hass: HomeAssistant, device, entries: list) -> list:
 
   sensors = []
 
-  if door_entity_ids:
-    humidSensor = DoorStatus(hass, device, door_entity_ids)
-    sensors.append(humidSensor)
+  # if door_entity_ids:
+  humidSensor = DoorStatus(hass, device, door_entity_ids)
+  sensors.append(humidSensor)
 
-  if window_entity_ids:
-    tempSensor = WindowsStatus(hass, device, window_entity_ids)
-    sensors.append(tempSensor)
+  # if window_entity_ids:
+  tempSensor = WindowsStatus(hass, device, window_entity_ids)
+  sensors.append(tempSensor)
 
-  if motion_entity_ids:
-    tempSensor = MotionStatus(hass, device, motion_entity_ids)
-    sensors.append(tempSensor)
+  # if motion_entity_ids:
+  tempSensor = MotionStatus(hass, device, motion_entity_ids)
+  sensors.append(tempSensor)
 
-  if water_leak_entity_ids:
-    tempSensor = WaterLeak(hass, device, water_leak_entity_ids)
-    sensors.append(tempSensor)
+  # if water_leak_entity_ids:
+  tempSensor = WaterLeak(hass, device, water_leak_entity_ids)
+  sensors.append(tempSensor)
 
   return sensors
