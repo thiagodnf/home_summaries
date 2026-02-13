@@ -59,10 +59,35 @@ class AverageTemperature(SensorEntity):
       )
     )
 
-    # 2. Trigger an immediate initial calculation
-    self._async_calculate_average()
+    if self.hass.is_running:
+        await self._setup_reactive_logic()
+    else:
+        # If HASS is still booting, wait for the 'started' signal
+        self.hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_START,
+            self._setup_reactive_logic
+        )
+
+
 
     _LOGGER.info("called async_added_to_hass %s", self._entity_ids)
+
+  async def _setup_reactive_logic(self, _event=None):
+    """The actual logic to find entities and start listeners."""
+    self._entity_ids = await self.async_get_entities()
+
+    _LOGGER.info("Found entities after boot: %s", self._entity_ids)
+
+    if self._entity_ids:
+      # Start tracking state changes now that we have the IDs
+      self.async_on_remove(
+          async_track_state_change_event(
+              self.hass, self._entity_ids, self._async_on_state_change
+          )
+      )
+     # 2. Trigger an immediate initial calculation
+      self._async_calculate_average()
+      self.async_write_ha_state()
 
   async def async_get_entities(self):
 
