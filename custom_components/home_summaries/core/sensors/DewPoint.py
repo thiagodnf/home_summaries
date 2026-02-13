@@ -6,7 +6,7 @@ from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.util import slugify
 from math import log
 
-from ..utils.Entity import get_state_value
+from ..utils.Entity import get_state_value_as_float
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,8 +70,9 @@ class DewPoint(SensorEntity):
 
   def _calculate_dew_point(self):
     """Calculate the dew point on the fly."""
-    T = get_state_value(self._hass, self.tempSensor.entity_id)
-    H = get_state_value(self._hass, self.humSensor.entity_id)
+
+    T = get_state_value_as_float(self._hass, self.tempSensor.entity_id)
+    H = get_state_value_as_float(self._hass, self.humSensor.entity_id)
 
     if not T or not H:
       return None
@@ -113,6 +114,9 @@ class DewPoint(SensorEntity):
     else: return 6
 
   def get_feels_like(self, dp:float, info:str = "description"):
+
+    if not dp:
+      return None
 
     level = self.get_level(dp)
 

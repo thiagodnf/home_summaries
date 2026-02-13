@@ -53,4 +53,19 @@ def get_state_value(hass: HomeAssistant, entity_id: str):
 
   obj = hass.states.get(entity_id)
 
-  return float(obj.state) if obj and obj.state not in ("unknown", "unavailable") else None
+  if not obj or obj.state in ("unknown", "unavailable"):
+    return None
+
+  return obj.state
+
+def get_state_value_as_float(hass: HomeAssistant, entity_id: str):
+
+  state = get_state_value(hass, entity_id)
+
+  if not state:
+    return None
+
+  try:
+    return float(state)
+  except (ValueError, ZeroDivisionError):
+    return None
