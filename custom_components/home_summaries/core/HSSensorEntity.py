@@ -50,7 +50,7 @@ class HSSensorEntity(SensorEntity):
   async def _setup_entity_ids(self, _event=None):
     """The actual logic to find entities and start listeners."""
 
-    self._entity_ids = get_entity_ids(self.hass, self._device.area_id, self._attr_device_class)
+    self._entity_ids = await self.async_get_entity_ids()
 
     # _LOGGER.info("Found entities after boot: %s", self._entity_ids)
 
@@ -66,6 +66,9 @@ class HSSensorEntity(SensorEntity):
     """Handle child state changes."""
     self._attr_native_value = self.async_calculate_state()
     self.async_write_ha_state()
+
+  async def async_get_entity_ids(self):
+    return get_entity_ids(self.hass, self._device.area_id, self._attr_device_class)
 
   def async_calculate_state(self):
     """Must be implemented by subclass."""
