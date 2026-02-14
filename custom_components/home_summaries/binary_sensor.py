@@ -59,8 +59,8 @@ async def set_up_area_id(hass: HomeAssistant, device, entries: list) -> list:
   sensors = []
 
   # if door_entity_ids:
-  humidSensor = DoorStatus(hass, device, door_entity_ids)
-  sensors.append(humidSensor)
+  doorStatus = DoorStatus(device)
+  sensors.append(doorStatus)
 
   # if window_entity_ids:
   tempSensor = WindowsStatus(hass, device, window_entity_ids)
