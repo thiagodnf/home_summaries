@@ -2,11 +2,33 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import async_get as get_device_registry
 from homeassistant.helpers import entity_registry as er
 
+from .Area import get_all_area_ids_except
+
+def get_entity_ids(hass: HomeAssistant, area_id: str, device_class: str):
+
+  target_area_ids = [area_id]
+
+  if area_id == "home":
+    target_area_ids = get_all_area_ids_except(hass, ["home"])
+
+  entries = get_all_entities_by_label_id(hass, "summary")
+
+  target_entries = []
+
+  for target_area_id in target_area_ids:
+    target_entries += filter_entries_by_area_id(hass, entries, target_area_id)
+
+  target_entries = filter_entries_by_device_class(hass, target_entries, device_class)
+
+  return [a.entity_id for a in target_entries]
+
 def get_all_entities_by_label_id(hass: HomeAssistant, label_id: str) -> list:
   ent_reg = er.async_get(hass)
   return er.async_entries_for_label(ent_reg, label_id)
 
 def filter_entries_by_area_id(hass: HomeAssistant, entries: list, area_id: str):
+
+  # target_area_ids = get_all_target_area_ids(hass, device.area_id)
   return [ entry for entry in entries if get_area_id(hass, entry) == area_id]
 
 def filter_entries_by_device_class(hass: HomeAssistant, entries: list, device_class):

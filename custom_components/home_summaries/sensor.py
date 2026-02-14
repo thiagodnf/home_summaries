@@ -37,12 +37,12 @@ async def set_up_area_id(hass: HomeAssistant, device, entries: list) -> list:
 
   _LOGGER.info("Setting up %s", device.area_id)
 
-  target_area_ids = get_all_target_area_ids(hass, device.area_id)
+  # target_area_ids = get_all_target_area_ids(hass, device.area_id)
 
-  target_entries = []
+  # target_entries = []
 
-  for target_area_id in target_area_ids:
-    target_entries += filter_entries_by_area_id(hass, entries, target_area_id)
+  # for target_area_id in target_area_ids:
+    # target_entries += filter_entries_by_area_id(hass, entries, target_area_id)
 
   sensors = []
 

@@ -5,7 +5,7 @@ from homeassistant.util import slugify
 from homeassistant.const import EVENT_HOMEASSISTANT_START
 from homeassistant.helpers.event import async_track_state_change_event
 
-from .utils.Entity import get_all_entities_by_label_id, filter_entries_by_area_id, filter_entries_by_device_class
+from .utils.Entity import get_entity_ids
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,26 +50,17 @@ class HSSensorEntity(SensorEntity):
   async def _setup_entity_ids(self, _event=None):
     """The actual logic to find entities and start listeners."""
 
-    self._entity_ids = await self.async_get_entity_ids()
+    self._entity_ids = get_entity_ids(self.hass, self._device.area_id, self._attr_device_class)
 
-    _LOGGER.info("Found entities after boot: %s", self._entity_ids)
+    # _LOGGER.info("Found entities after boot: %s", self._entity_ids)
 
     if self._entity_ids:
       # Start tracking state changes now that we have the IDs
       self.async_on_remove(
           async_track_state_change_event(self.hass, self._entity_ids, self.async_on_state_change)
       )
-      # 2. Trigger an immediate initial calculation
+      # Trigger an immediate initial calculation
       await self.async_on_state_change()
-
-  async def async_get_entity_ids(self):
-
-    entries = get_all_entities_by_label_id(self.hass, "summary")
-
-    entries = filter_entries_by_area_id(self.hass, entries, self._device.area_id)
-    entries = filter_entries_by_device_class(self.hass, entries, self._attr_device_class)
-
-    return [a.entity_id for a in entries]
 
   async def async_on_state_change(self, event = None):
     """Handle child state changes."""
