@@ -2,9 +2,9 @@ from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 
 from ..GroupBinarySensor import GroupBinarySensor
 
-class MotionStatus(GroupBinarySensor):
+class WindowStatus(GroupBinarySensor):
 
   def __init__(self, device):
     super().__init__(
-      device, BinarySensorDeviceClass.MOTION, "Motion Status"
+      device, BinarySensorDeviceClass.MOTION, "Window Status"
     )

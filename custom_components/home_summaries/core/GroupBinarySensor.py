@@ -25,6 +25,8 @@ class GroupBinarySensor(BinarySensorGroup):
 
     self._device = device
 
+    _LOGGER.debug("Setup complete for %s", self._attr_name)
+
   @property
   def device_info(self):
     return {
