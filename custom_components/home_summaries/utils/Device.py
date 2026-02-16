@@ -3,7 +3,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import async_get as get_device_registry
 from homeassistant.helpers.area_registry import async_get as get_area_registry
 
-from ...const import DOMAIN, MANUFACTURER, INTEGRATION_NAME
+from ..const import DOMAIN, MANUFACTURER, INTEGRATION_NAME
 
 def get_or_create_device(hass: HomeAssistant, entry: ConfigEntry, area_id: str):
 

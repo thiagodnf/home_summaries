@@ -1,22 +1,29 @@
 import logging
 
-from homeassistant.components.group.sensor import SensorEntity
 from homeassistant.util import slugify
+from homeassistant.components.group.binary_sensor import BinarySensorGroup
 from homeassistant.const import EVENT_HOMEASSISTANT_START
 from homeassistant.helpers.event import async_track_state_change_event
 
-from .utils.Entity import get_entity_ids
+from ...utils.Entity import get_entity_ids
 
 _LOGGER = logging.getLogger(__name__)
 
-class HSSensorEntity(SensorEntity):
+class GroupBinarySensor(BinarySensorGroup):
 
-  def __init__(self, device, name):
+  def __init__(self, device, device_class, name):
+
+    name = f"{device.name} {name}"
+
+    super().__init__(
+      entity_ids = [],
+      device_class = device_class,
+      name = name,
+      mode = False,
+      unique_id = slugify(name)
+    )
+
     self._device = device
-    self._entity_ids = []
-    self._attr_name = f"{device.name} {name}"
-    self._attr_unique_id = slugify(self._attr_name)
-    self._attr_native_value = None
 
     _LOGGER.debug("Setup complete for %s", self._attr_name)
 
@@ -52,8 +59,6 @@ class HSSensorEntity(SensorEntity):
 
     self._entity_ids = await self.async_get_entity_ids()
 
-    # _LOGGER.info("Found entities after boot: %s", self._entity_ids)
-
     if self._entity_ids:
       # Start tracking state changes now that we have the IDs
       self.async_on_remove(
@@ -64,12 +69,8 @@ class HSSensorEntity(SensorEntity):
 
   async def async_on_state_change(self, event = None):
     """Handle child state changes."""
-    self._attr_native_value = self.async_calculate_state()
+    self.async_update_group_state()
     self.async_write_ha_state()
 
   async def async_get_entity_ids(self):
-    return get_entity_ids(self.hass, self._device.area_id, self._attr_device_class)
-
-  def async_calculate_state(self):
-    """Must be implemented by subclass."""
-    pass
+    return get_entity_ids(self.hass, self._device.area_id, self._device_class)

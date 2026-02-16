@@ -4,8 +4,8 @@ from homeassistant.components.sensor import (SensorDeviceClass, SensorStateClass
 from homeassistant.const import UnitOfTemperature
 from math import log
 
-from ..utils.Entity import get_state_value_as_float
-from ..HSSensorEntity import HSSensorEntity
+from ...utils.Entity import get_state_value_as_float
+from .HSSensorEntity import HSSensorEntity
 
 _LOGGER = logging.getLogger(__name__)
 

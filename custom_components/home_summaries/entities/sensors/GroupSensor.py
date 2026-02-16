@@ -1,25 +1,29 @@
 import logging
 
 from homeassistant.util import slugify
-from homeassistant.components.group.binary_sensor import BinarySensorGroup
+from homeassistant.components.group.sensor import SensorGroup
 from homeassistant.const import EVENT_HOMEASSISTANT_START
 from homeassistant.helpers.event import async_track_state_change_event
 
-from .utils.Entity import get_entity_ids
+from ...utils.Entity import get_entity_ids
 
 _LOGGER = logging.getLogger(__name__)
 
-class GroupBinarySensor(BinarySensorGroup):
+class GroupSensor(SensorGroup):
 
-  def __init__(self, device, device_class, name):
+  def __init__(self, hass, device, name, device_class, state_class, unit_of_measurement, sensor_type):
 
     name = f"{device.name} {name}"
 
     super().__init__(
+      hass = hass,
       entity_ids = [],
-      device_class = device_class,
       name = name,
-      mode = False,
+      sensor_type = sensor_type,
+      device_class = device_class,
+      state_class = state_class,
+      unit_of_measurement = unit_of_measurement,
+      ignore_non_numeric = True,
       unique_id = slugify(name)
     )
 
@@ -73,4 +77,4 @@ class GroupBinarySensor(BinarySensorGroup):
     self.async_write_ha_state()
 
   async def async_get_entity_ids(self):
-    return get_entity_ids(self.hass, self._device.area_id, self._device_class)
+    return get_entity_ids(self.hass, self._device.area_id, self._attr_device_class )

@@ -3,12 +3,9 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .core.utils.Device import get_or_create_device
+from .utils.Device import get_or_create_device
 
-from .core.binary_sensors.DoorStatus import DoorStatus
-from .core.binary_sensors.WindowStatus import WindowStatus
-from .core.binary_sensors.MoistureStatus import MoistureStatus
-from .core.binary_sensors.MotionStatus import MotionStatus
+from .entities.binary_sensors.StatusSensor import DoorStatus, WindowStatus, MoistureStatus, MotionStatus
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -39,6 +36,6 @@ async def set_up_area_id(device) -> list:
   sensors.append(DoorStatus(device))
   sensors.append(WindowStatus(device))
   sensors.append(MotionStatus(device))
-  sensors.append( MoistureStatus(device))
+  sensors.append(MoistureStatus(device))
 
   return sensors
