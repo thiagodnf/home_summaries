@@ -14,5 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Update version in manifest
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "$VERSION"
+
       - name: Release
         uses: softprops/action-gh-release@v2
